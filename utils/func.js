@@ -83,6 +83,7 @@ async function codeSaveDBandSend(userData, subject, plainTextMsg, codeName, send
                             </div>`;
 				try {
 					await mailSending(sentTo, subject, themMailMsg);
+					console.log(`message has ben delivered to ${sentTo}`);
 					sendRes.accepted = true;
 				} catch (error) {
 					sendRes.accepted = false;

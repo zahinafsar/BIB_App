@@ -85,9 +85,13 @@ exports.signup_ApiController = async (req, res, next) => {
 				const plainTextMsg = "Thank you for creating an account! Enter the email verification code:";
 				const codeName = "Email_verification_code";
 				const sendResponse = (await codeSaveDBandSend(saveUserData, subject, plainTextMsg, codeName)) || {};
+				const nxt = next;
+				const directLogin = true;
+				const keepLogged = true;
+				const login = await doLogin(nxt, saveUserData, keepLogged, directLogin);
 
 				if (sendResponse.accepted) {
-					return res.json({ message: "Account created successfully", signUpUserId: saveUserData._id });
+					return res.json({ message: "Account created successfully", signUpUserId: saveUserData._id, sessionId: login.sessionId });
 				} else {
 					throw new Error("Failed to send email verification code");
 				}
