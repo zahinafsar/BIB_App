@@ -5,7 +5,7 @@ const config = require("../config");
 const { doLogin, codeSaveDBandSend } = require("../utils/func");
 
 exports.signup_ApiController = async (req, res, next) => {
-	let { email: regEmail, username, phone, password: newPass } = req.body;
+	let { email: regEmail, firstName, lastName, username, phone, password: newPass } = req.body;
 
 	try {
 		username = !!username ? String(username).toLowerCase().trim() : false;
@@ -70,10 +70,11 @@ exports.signup_ApiController = async (req, res, next) => {
 			const currentEpochTime = Date.now();
 			const userInsertStructure = new User({
 				username,
+				firstName,
+				lastName,
 				email: regEmail,
 				phone,
 				password: encryptedPassword,
-				isEmailVerified: true,
 				avatar: "/user-avatar/avatar.png",
 				lastOnline: currentEpochTime,
 			});
