@@ -1,7 +1,15 @@
 const LoginSession = require("../models/LoginSession");
-const config = require("../config/mail");
+const config = {...require("../config/mail"), ...require("../config")};
 const User = require("../models/Users");
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
+
+function generate_jwt_token(user) {
+	const token = jwt.sign({ id: user._id }, config.secretKey, {
+		expiresIn: '7d',
+	});
+	return token;
+};
 
 function generate_token(length) {
 	const a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
@@ -169,7 +177,7 @@ async function doLogin(next, userData, keepLogged, directLogin) {
 		});
 
 		const saveLoginSessionData = await loginSessionInsertStructure.save();
-
+		const token = generate_jwt_token(userData);
 		let sendRes = {};
 
 		const plainTextMsg = "Please Enter the login authentication code!";
@@ -177,6 +185,7 @@ async function doLogin(next, userData, keepLogged, directLogin) {
 			if (directLogin) {
 				sendRes.accepted = true;
 				sendRes.sessionId = sessionToken;
+				sendRes.token = token
 			} else {
 				const codeSendMethod = "email";
 				if (codeSendMethod === "phone") {
