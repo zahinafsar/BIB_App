@@ -11,14 +11,14 @@ var UserSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		username: {
-			type: String,
-			lowercase: true,
-			unique: [true, "Username should be unique"],
-			required: [true, "Username can't be blank"],
-			match: [/^[a-zA-Z0-9]+$/, "Username is invalid"],
-			index: true,
-		},
+		// username: {
+		// 	type: String,
+		// 	lowercase: true,
+		// 	unique: [true, "Username should be unique"],
+		// 	required: [true, "Username can't be blank"],
+		// 	match: [/^[a-zA-Z0-9]+$/, "Username is invalid"],
+		// 	index: true,
+		// },
 		email: {
 			type: String,
 			lowercase: true,

@@ -5,16 +5,16 @@ const config = require("../config");
 const { doLogin, codeSaveDBandSend } = require("../utils/func");
 
 exports.signup_ApiController = async (req, res, next) => {
-	let { email: regEmail, firstName, lastName, username, phone, password: newPass } = req.body;
+	let { email: regEmail, firstName, lastName, phone, password: newPass } = req.body;
 
 	try {
-		username = !!username ? String(username).toLowerCase().trim() : false;
+		// username = !!username ? String(username).toLowerCase().trim() : false;
 		regEmail = !!regEmail ? String(regEmail).toLowerCase().trim() : false;
 		phone = !!phone ? String(phone).toLowerCase().trim().replace(/-/g, "") : false;
 		newPass = !!newPass ? String(newPass) : false;
 
 		// Check filled or not
-		const usrNmF = username.length > 0;
+		// const usrNmF = username.length > 0;
 		const emlF = regEmail.length > 0;
 		const phnF = phone.length > 0;
 		const newPassF = newPass.length > 0;
@@ -34,14 +34,14 @@ exports.signup_ApiController = async (req, res, next) => {
 		}
 
 		// username validation
-		let usrNmLng, usrNmLettersValid, usernameExist, usrNmOk;
-		if (username) {
-			usernameRegex = /^[a-zA-Z0-9]+$/;
-			usrNmLng = username.length <= 46 && username.length >= 3;
-			usrNmLettersValid = username ? !!username.match(usernameRegex) : false;
-			usernameExist = await User.findOne({ username });
-			usrNmOk = usrNmF && usrNmLng && usrNmLettersValid && !usernameExist ? true : false;
-		}
+		// let usrNmLng, usrNmLettersValid, usernameExist, usrNmOk;
+		// if (username) {
+		// 	usernameRegex = /^[a-zA-Z0-9]+$/;
+		// 	usrNmLng = username.length <= 46 && username.length >= 3;
+		// 	usrNmLettersValid = username ? !!username.match(usernameRegex) : false;
+		// 	usernameExist = await User.findOne({ username });
+		// 	usrNmOk = usrNmF && usrNmLng && usrNmLettersValid && !usernameExist ? true : false;
+		// }
 
 		// phone validation
 		let phnLng, phnLettersValid, phoneExist, phnNmOk;
@@ -64,12 +64,12 @@ exports.signup_ApiController = async (req, res, next) => {
 
 		//////////////////////////////////////// INPUT VALIDATION END ////////////////////////////////////////
 
-		if (usrNmOk && emailOk && phnNmOk && passwordOk) {
+		if (emailOk && phnNmOk && passwordOk) {
 			const encryptedPassword = await bcrypt.hash(newPass, config.saltOrRounds);
 
 			const currentEpochTime = Date.now();
 			const userInsertStructure = new User({
-				username,
+				// username,
 				firstName,
 				lastName,
 				email: regEmail,
@@ -115,17 +115,17 @@ exports.signup_ApiController = async (req, res, next) => {
 				}
 			}
 
-			if (!usrNmOk) {
-				if (!usrNmF) {
-					error.username = "Please enter your username!";
-				} else if (!usrNmLng) {
-					error.username = "username could be 3 to 46 characters long!";
-				} else if (!usrNmLettersValid) {
-					error.username = "Please enter valid username!";
-				} else if (usernameExist) {
-					error.username = "This username is not available.";
-				}
-			}
+			// if (!usrNmOk) {
+			// 	if (!usrNmF) {
+			// 		error.username = "Please enter your username!";
+			// 	} else if (!usrNmLng) {
+			// 		error.username = "username could be 3 to 46 characters long!";
+			// 	} else if (!usrNmLettersValid) {
+			// 		error.username = "Please enter valid username!";
+			// 	} else if (usernameExist) {
+			// 		error.username = "This username is not available.";
+			// 	}
+			// }
 
 			if (!phnNmOk) {
 				if (!phnF) {
