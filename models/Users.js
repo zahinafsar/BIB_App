@@ -28,14 +28,14 @@ var UserSchema = new mongoose.Schema(
 			index: true,
 		},
 		roles: [{ type: "String" }],
-		isEmailVerified: { type: Boolean, default: false },
-		isPhoneVerified: { type: Boolean, default: false },
+		isEmailVerified: { type: Boolean, default: true },
+		// isPhoneVerified: { type: Boolean, default: false },
 		password: {
 			type: String,
 			required: true,
 		},
 
-		phone: Number,
+		// phone: Number,
 		resetPasswordToken: String,
 		resetPasswordExpires: Date,
 		avatar: String,
@@ -46,12 +46,12 @@ var UserSchema = new mongoose.Schema(
 			wrongTry: Number,
 			used: Boolean,
 		},
-		phoneVerifyCode: {
-			code: Number,
-			codeExpireTime: Date,
-			wrongTry: Number,
-			used: Boolean,
-		},
+		// phoneVerifyCode: {
+		// 	code: Number,
+		// 	codeExpireTime: Date,
+		// 	wrongTry: Number,
+		// 	used: Boolean,
+		// },
 		forgetCode: {
 			code: Number,
 			codeExpireTime: Date,

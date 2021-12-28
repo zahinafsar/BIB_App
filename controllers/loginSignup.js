@@ -10,13 +10,13 @@ exports.signup_ApiController = async (req, res, next) => {
 	try {
 		// username = !!username ? String(username).toLowerCase().trim() : false;
 		regEmail = !!regEmail ? String(regEmail).toLowerCase().trim() : false;
-		phone = !!phone ? String(phone).toLowerCase().trim().replace(/-/g, "") : false;
+		// phone = !!phone ? String(phone).toLowerCase().trim().replace(/-/g, "") : false;
 		newPass = !!newPass ? String(newPass) : false;
 
 		// Check filled or not
 		// const usrNmF = username.length > 0;
 		const emlF = regEmail.length > 0;
-		const phnF = phone.length > 0;
+		// const phnF = phone.length > 0;
 		const newPassF = newPass.length > 0;
 
 		//////////////////////////////////////// INPUT VALIDATION START ////////////////////////////////////////
@@ -44,15 +44,14 @@ exports.signup_ApiController = async (req, res, next) => {
 		// }
 
 		// phone validation
-		let phnLng, phnLettersValid, phoneExist, phnNmOk;
-		if (phone) {
-			// const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-			const phoneRegex = /^[0-9]+$/;
-			phnLng = phone.length <= 13 && phone.length >= 9;
-			phnLettersValid = phone ? !!phone.match(phoneRegex) : false;
-			phoneExist = await User.findOne({ phone });
-			phnNmOk = phnF && phnLng && phnLettersValid && !phoneExist ? true : false;
-		}
+		// let phnLng, phnLettersValid, phoneExist, phnNmOk;
+		// if (phone) {
+		// 	const phoneRegex = /^[0-9]+$/;
+		// 	phnLng = phone.length <= 13 && phone.length >= 9;
+		// 	phnLettersValid = phone ? !!phone.match(phoneRegex) : false;
+		// 	phoneExist = await User.findOne({ phone });
+		// 	phnNmOk = phnF && phnLng && phnLettersValid && !phoneExist ? true : false;
+		// }
 
 		/* Strong password check */
 		if (newPass) {
@@ -64,7 +63,7 @@ exports.signup_ApiController = async (req, res, next) => {
 
 		//////////////////////////////////////// INPUT VALIDATION END ////////////////////////////////////////
 
-		if (emailOk && phnNmOk && passwordOk) {
+		if (emailOk && passwordOk) {
 			const encryptedPassword = await bcrypt.hash(newPass, config.saltOrRounds);
 
 			const currentEpochTime = Date.now();
@@ -73,7 +72,7 @@ exports.signup_ApiController = async (req, res, next) => {
 				firstName,
 				lastName,
 				email: regEmail,
-				phone,
+				// phone,
 				password: encryptedPassword,
 				avatar: "/user-avatar/avatar.png",
 				lastOnline: currentEpochTime,
@@ -127,15 +126,15 @@ exports.signup_ApiController = async (req, res, next) => {
 			// 	}
 			// }
 
-			if (!phnNmOk) {
-				if (!phnF) {
-					error.phone = "Please enter your phone number!";
-				} else if (!phnLettersValid || !phnLng) {
-					error.phone = "Please enter valid Phone number";
-				} else if (phoneExist) {
-					error.phone = "This phone number has been used previously.";
-				}
-			}
+			// if (!phnNmOk) {
+			// 	if (!phnF) {
+			// 		error.phone = "Please enter your phone number!";
+			// 	} else if (!phnLettersValid || !phnLng) {
+			// 		error.phone = "Please enter valid Phone number";
+			// 	} else if (phoneExist) {
+			// 		error.phone = "This phone number has been used previously.";
+			// 	}
+			// }
 
 			if (!passwordOk) {
 				if (!newPassF) {
