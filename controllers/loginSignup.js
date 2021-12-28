@@ -73,6 +73,7 @@ exports.signup_ApiController = async (req, res, next) => {
 				lastName,
 				email: regEmail,
 				// phone,
+				roles: ["user"],
 				password: encryptedPassword,
 				avatar: "/user-avatar/avatar.png",
 				lastOnline: currentEpochTime,

@@ -11,6 +11,10 @@ function generate_jwt_token(user) {
 	return token;
 };
 
+function verify_token(token) {
+	return jwt.verify(token, config.secretKey);
+}
+
 function generate_token(length) {
 	const a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
 	const b = [];
@@ -218,4 +222,4 @@ async function doLogin(next, userData, keepLogged, directLogin) {
 	}
 }
 
-module.exports = { generate_token, mailSending, codeSaveDBandSend, doLogin };
+module.exports = { generate_token, mailSending, codeSaveDBandSend, doLogin, verify_token };

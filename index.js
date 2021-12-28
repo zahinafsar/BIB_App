@@ -8,6 +8,8 @@ var cors = require("cors");
 
 //Routers
 const authRoutes = require("./routes/auth");
+const bookRoutes = require("./routes/book");
+const userRoutes = require("./routes/user");
 //Routers
 
 
@@ -32,6 +34,8 @@ app.use(morgan("tiny"));
 
 //Use Routes
 app.use("/api", authRoutes);
+app.use("/api", bookRoutes);
+app.use("/api", userRoutes);
 //Use Routes
 
 //error handling

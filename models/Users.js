@@ -34,7 +34,7 @@ var UserSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-
+		bookMarked: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book", unique: true }],
 		// phone: Number,
 		resetPasswordToken: String,
 		resetPasswordExpires: Date,
