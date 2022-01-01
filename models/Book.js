@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 var ChapterSchema = new mongoose.Schema(
 	{
+		bookId: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Book",
+			required: true,
+		},
 		chapterNo: {
 			type: Number,
 			required: true,
@@ -18,6 +23,10 @@ var ChapterSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		audio: {
+			type: String,
+			required: true,
+		}
 	}
 );
 
@@ -38,8 +47,7 @@ var BookSchema = new mongoose.Schema(
 		description: {
 			type: String,
 			required: true,
-		},
-		chapters: [ChapterSchema],
+		}
 	},
 	{
 		timestamps: true,
@@ -81,7 +89,8 @@ var VideoSchema = new mongoose.Schema(
 	}
 );
 
-const book = mongoose.model("Book", BookSchema);
-const audio = mongoose.model("Audio", AudioSchema);
-const video = mongoose.model("Video", VideoSchema);
-module.exports = {book, audio, video};
+const Book = mongoose.model("Book", BookSchema);
+const Chapter = mongoose.model("Chapter", ChapterSchema);
+const Audio = mongoose.model("Audio", AudioSchema);
+const Video = mongoose.model("Video", VideoSchema);
+module.exports = {Book, Audio, Video, Chapter};
