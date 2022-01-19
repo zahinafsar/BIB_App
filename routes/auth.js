@@ -4,9 +4,9 @@ const { signup_ApiController, accountVerify_CodeSubmit_ApiController, resendAcco
 
 const router = express.Router();
 
-router.post("/auth/signup", signup_ApiController);
-router.post("/auth/account-verify", accountVerify_CodeSubmit_ApiController);
-router.post("/auth/resend-verify-code", resendAccountVerifyCode_ApiController);
+router.post("/signup", signup_ApiController);
+router.post("/account-verify", accountVerify_CodeSubmit_ApiController);
+router.post("/resend-verify-code", resendAccountVerifyCode_ApiController);
 
-router.post("/auth/login", login_ApiController);
+router.post("/login", login_ApiController);
 module.exports = router;

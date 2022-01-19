@@ -9,6 +9,9 @@ var cors = require("cors");
 //Routers
 const authRoutes = require("./routes/auth");
 const bookRoutes = require("./routes/book");
+const chapterRoutes = require("./routes/chapter");
+const podcastRoutes = require("./routes/podcast");
+const videoRoutes = require("./routes/video");
 const userRoutes = require("./routes/user");
 //Routers
 
@@ -33,9 +36,12 @@ app.use(morgan("tiny"));
 // MongoDB configuration
 
 //Use Routes
-app.use("/api", authRoutes);
-app.use("/api", bookRoutes);
-app.use("/api", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/book", bookRoutes);
+app.use("/api/chapter", chapterRoutes);
+app.use("/api/podcast", podcastRoutes);
+app.use("/api/video", videoRoutes);
+app.use("/api/user", userRoutes);
 //Use Routes
 
 //error handling

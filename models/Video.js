@@ -1,28 +1,25 @@
 const mongoose = require("mongoose");
 
-var BookSchema = new mongoose.Schema(
+var VideoSchema = new mongoose.Schema(
 	{
-		title: {
-			type: String,
-			required: true,
-		},
-        writer: {
-			type: String,
-			required: true,
-		},
-        coverPhoto: {
+        title: {
 			type: String,
 			required: true,
 		},
 		description: {
 			type: String,
 			required: true,
+		},
+		file: {
+			type: String,
+			required: true,
+		},
+        bookId: {
+			type: String,
+			required: true,
 		}
-	},
-	{
-		timestamps: true,
 	}
 );
 
-const Book = mongoose.model("Book", BookSchema);
-module.exports = Book
+const Video = mongoose.model("Video", VideoSchema);
+module.exports = Video
