@@ -27,6 +27,7 @@ var UserSchema = new mongoose.Schema(
 			match: [/\S+@\S+\.\S+/, "Email is invalid"],
 			index: true,
 		},
+		location: String,
 		roles: [{ type: "String" }],
 		isEmailVerified: { type: Boolean, default: true },
 		// isPhoneVerified: { type: Boolean, default: false },

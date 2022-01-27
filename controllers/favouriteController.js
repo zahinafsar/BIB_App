@@ -15,6 +15,26 @@ exports.get_my_profile = async (req, res, next) => {
   }
 };
 
+exports.edit_my_profile = async (req, res, next) => {
+  try {
+    const { firstName, lastName, email, location, avatar } = req.body;
+    const user = req.user;
+    const data = {
+      firstName: firstName || user.firstName,
+      lastName: lastName || user.lastName,
+      email: email || user.email,
+      location: location || user.location,
+      avatar: avatar || user.avatar,
+    };
+    await User.updateOne({ _id: user._id }, { $set: data });
+    return res.status(200).json({
+      message: "User Updated successfully"
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.add_book_mark = async (req, res, next) => {
   try {
     const { bookId } = req.body;
