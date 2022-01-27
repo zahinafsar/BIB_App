@@ -19,6 +19,7 @@ const userRoutes = require("./routes/user");
 // Middleware
 const middleware = [cors(), express.json(), express.static("public"), bodyParser.urlencoded({ extended: false }), bodyParser.json()];
 app.use(middleware);
+app.use(morgan("tiny"));
 // Middleware
 
 // MongoDB configuration
@@ -31,8 +32,6 @@ mongoose
 	})
 	.then(() => console.log("Mongodb Connected..."))
 	.catch((err) => console.log(err));
-
-app.use(morgan("tiny"));
 // MongoDB configuration
 
 //Use Routes

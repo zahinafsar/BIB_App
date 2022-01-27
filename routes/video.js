@@ -9,7 +9,6 @@ const router = express.Router();
 router.post("/", check_auth("admin"), add_book_video);
 router.put("/", check_auth("admin"), update_book_video);
 router.get("/", get_all_videos);
-// router.get("/:id", get_book);
 
 
 module.exports = router;

@@ -8,16 +8,18 @@ exports.signup_ApiController = async (req, res, next) => {
 	let { email: regEmail, firstName, lastName, phone, password: newPass } = req.body;
 
 	try {
+
 		// username = !!username ? String(username).toLowerCase().trim() : false;
 		regEmail = !!regEmail ? String(regEmail).toLowerCase().trim() : false;
 		// phone = !!phone ? String(phone).toLowerCase().trim().replace(/-/g, "") : false;
 		newPass = !!newPass ? String(newPass) : false;
 
 		// Check filled or not
-		// const usrNmF = username.length > 0;
-		const emlF = regEmail.length > 0;
+		const fnF = firstName?.length > 0;
+		const lnF = lastName?.length > 0;
+		const emlF = regEmail?.length > 0;
 		// const phnF = phone.length > 0;
-		const newPassF = newPass.length > 0;
+		const newPassF = newPass?.length > 0;
 
 		//////////////////////////////////////// INPUT VALIDATION START ////////////////////////////////////////
 
@@ -32,16 +34,6 @@ exports.signup_ApiController = async (req, res, next) => {
 			emailExist = await User.findOne({ email: regEmail });
 			emailOk = emlF && emlLng && validEmail && !emailExist ? true : false;
 		}
-
-		// username validation
-		// let usrNmLng, usrNmLettersValid, usernameExist, usrNmOk;
-		// if (username) {
-		// 	usernameRegex = /^[a-zA-Z0-9]+$/;
-		// 	usrNmLng = username.length <= 46 && username.length >= 3;
-		// 	usrNmLettersValid = username ? !!username.match(usernameRegex) : false;
-		// 	usernameExist = await User.findOne({ username });
-		// 	usrNmOk = usrNmF && usrNmLng && usrNmLettersValid && !usernameExist ? true : false;
-		// }
 
 		// phone validation
 		// let phnLng, phnLettersValid, phoneExist, phnNmOk;
@@ -63,7 +55,7 @@ exports.signup_ApiController = async (req, res, next) => {
 
 		//////////////////////////////////////// INPUT VALIDATION END ////////////////////////////////////////
 
-		if (emailOk && passwordOk) {
+		if (emailOk && passwordOk && fnF && lnF) {
 			const encryptedPassword = await bcrypt.hash(newPass, config.saltOrRounds);
 
 			const currentEpochTime = Date.now();
@@ -113,6 +105,14 @@ exports.signup_ApiController = async (req, res, next) => {
 				} else if (emailExist) {
 					error.email = "This email has been used previously.";
 				}
+			}
+
+			if (!fnF) {
+				error.firstName = "First name is required!";
+			}
+
+			if (!lnF) {
+				error.lastName = "Last name is required!";
 			}
 
 			// if (!usrNmOk) {
@@ -349,7 +349,8 @@ exports.login_ApiController = async (req, res, next) => {
 
 				if (login.accepted) {
 					res.cookie('session', login.token)
-					return res.json({ user: userExist, sessionId: login.sessionId });
+					// return res.json({ user: userExist, token: login.token, sessionId: login.sessionId });
+					return res.json({ user: userExist, token: login.token });
 				} else {
 					throw new Error("Code sent failed");
 				}

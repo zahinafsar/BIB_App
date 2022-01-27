@@ -5,11 +5,11 @@ var UserSchema = new mongoose.Schema(
 	{
 		firstName: {
 			type: String,
-			required: true,
+			required: [true, "First name is required"],
 		},
 		lastName: {
 			type: String,
-			required: true,
+			required: [true, "Last name is required"],
 		},
 		// username: {
 		// 	type: String,
@@ -34,7 +34,9 @@ var UserSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		bookMarked: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book", unique: true }],
+		bookMarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book", unique: true }],
+		favouritePodcasts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Podcast", unique: true }],
+		favouriteVideos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video", unique: true }],
 		// phone: Number,
 		resetPasswordToken: String,
 		resetPasswordExpires: Date,
