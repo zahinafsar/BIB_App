@@ -15,7 +15,6 @@ const bookRoutes = require("./routes/book");
 const chapterRoutes = require("./routes/chapter");
 const podcastRoutes = require("./routes/podcast");
 const videoRoutes = require("./routes/video");
-const favouriteRoutes = require("./routes/favourite");
 const userRoutes = require("./routes/user");
 //Routers
 
@@ -50,7 +49,6 @@ app.use("/api/chapter", chapterRoutes);
 app.use("/api/podcast", podcastRoutes);
 app.use("/api/video", videoRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/user", favouriteRoutes);
 //Use Routes
 
 //Initialize Socket
