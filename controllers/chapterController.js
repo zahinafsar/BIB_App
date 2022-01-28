@@ -24,13 +24,13 @@ exports.add_chapter = async (req, res, next) => {
         const book = await Book.find({ _id: bookId })
         if (!book.length) {
             return res.status(404).json({
-                message: "Book not found",
+                error: "Book not found",
             })
         }
         const isExist = await Chapter.find({ bookId: bookId, chapterNo: chapterNo })
         if (isExist?.length) {
             return res.status(403).json({
-                message: "Chapter No. already exist",
+                error: "Chapter No. already exist",
             })
         }
         mongoChapterData = new Chapter(chapter)
@@ -67,7 +67,7 @@ exports.update_chapter = async (req, res, next) => {
         const isExist = await Chapter.find({ bookId: bookId, chapterNo: chapterNo })
         if (!isExist?.length) {
             return res.status(403).json({
-                message: "Chapter does not exist",
+                error: "Chapter does not exist",
             })
         }
         await Chapter.updateOne({ "bookId": bookId, "chapterNo": chapterNo}, chapter)

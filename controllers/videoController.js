@@ -17,7 +17,7 @@ exports.add_book_video = async (req, res, next) => {
     const isExist = await Book.findById(bookId);
     if (!isExist) {
       return res.status(404).json({
-        message: "Book not found",
+        error: "Book not found",
       });
     }
     mongoVideoData = new Video(video);
@@ -45,7 +45,7 @@ exports.update_book_video = async (req, res, next) => {
     const isExist = await Video.findById(_id);
     if (!isExist) {
       return res.status(404).json({
-        message: "Video not found",
+        error: "Video not found",
       });
     }
     await Video.updateOne({ _id: _id }, video);

@@ -15,13 +15,13 @@ exports.add_book_podcast = async (req, res, next) => {
     };
     if (!bookId) {
       return res.status(400).json({
-        message: "BookId is required",
+        error: "BookId is required",
       });
     }
     const isExist = await Book.findById(bookId);
     if (!isExist) {
       return res.status(404).json({
-        message: "Book not found",
+        error: "Book not found",
       });
     }
     mongopodcastData = new Podcast(podcast);
@@ -48,7 +48,7 @@ exports.update_book_podcast = async (req, res, next) => {
     const isExist = await Podcast.findById(_id);
     if (!isExist) {
       return res.status(404).json({
-        message: "podcast not found",
+        error: "podcast not found",
       });
     }
     await Podcast.updateOne({ _id: _id }, podcast);

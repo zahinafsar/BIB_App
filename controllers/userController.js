@@ -17,14 +17,14 @@ exports.add_favourite = async (req, res, next) => {
     const isTypeOk = Object.keys(favouritesType).includes(type)
     if (!isTypeOk) {
       return res.status(400).json({
-        message: "Invalied type",
+        error: "Invalied type",
       });
     }
     //////////////////////////////////////////////// Validations
     const data = await favouritesType[type].find({ _id: id || null });
     if (!id || id.length === 0 || data.length === 0) {
       return res.status(400).json({
-        message: `Invalid ${type} id`,
+        error: `Invalid ${type} id`,
       });
     }
     if (user.favourite[type].includes(id)) {
@@ -59,7 +59,7 @@ exports.get_favourite = async (req, res, next) => {
     console.log(isTypeOk);
     if (!isTypeOk) {
       return res.status(400).json({
-        message: "Invalied type",
+        error: "Invalied type",
       });
     }
     // get user fevourite podcasts
@@ -67,7 +67,7 @@ exports.get_favourite = async (req, res, next) => {
       _id: { $in: user.favourite[type] },
     });
     return res.status(200).json({
-      message: `Favourite ${type}s are fetched successfully`,
+      error: `Favourite ${type}s are fetched successfully`,
       data,
     });
   } catch (error) {

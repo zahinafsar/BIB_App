@@ -48,7 +48,7 @@ exports.update_book = async (req, res, next) => {
         const isExist = await Book.find({ _id: _id })
         if (!isExist?.length) {
             return res.status(403).json({
-                message: "Book does not exist",
+                error: "Book does not exist",
             })
         }
         await Book.updateOne({ "_id": _id}, bookData)
@@ -90,7 +90,7 @@ exports.get_book = async (req, res, next) => {
         const book = await Book.find({ _id: id })
         if (!book.length) {
             return res.status(404).json({
-                message: "Book not found",
+                error: "Book not found",
             })
         }
         const chapters = await Chapter.find({ bookId: id })
