@@ -10,13 +10,14 @@ var PodcastSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		text: String,
 		file: {
 			type: String,
 			required: true,
 		},
         bookId: {
-			type: String,
-			required: true,
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Book",
 		}
 	}
 );

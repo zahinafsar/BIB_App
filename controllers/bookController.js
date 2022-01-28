@@ -67,9 +67,17 @@ exports.get_all_book = async (req, res, next) => {
         const allBooks = await Book.find({})
         .limit(limit)
         .skip(limit * page);
+        const books = allBooks.reduce((acc, curr) => {
+            const book = curr._doc;
+            acc.push({
+                ...book,
+                isFavourite: req.user.favourite.book.includes(book._id),
+            })
+            return acc
+        }, [])
         return res.status(200).json({
             message: "Books are fetched successfully",
-            data: allBooks,
+            data: books,
         })
     } catch (error) {
         next(error);

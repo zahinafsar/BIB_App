@@ -8,7 +8,7 @@ const router = express.Router();
 // video
 router.post("/", check_auth("admin"), add_book_video);
 router.put("/", check_auth("admin"), update_book_video);
-router.get("/", get_all_videos);
+router.get("/", check_auth("user"), get_all_videos);
 
 
 module.exports = router;

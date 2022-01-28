@@ -3,38 +3,6 @@ const Book = require("../models/Book");
 const Video = require("../models/Video");
 const Podcast = require("../models/Podcast");
 
-exports.get_my_profile = async (req, res, next) => {
-  try {
-    const user = req.user;
-    return res.status(200).json({
-      message: "User profile",
-      user,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.edit_my_profile = async (req, res, next) => {
-  try {
-    const { firstName, lastName, email, location, avatar } = req.body;
-    const user = req.user;
-    const data = {
-      firstName: firstName || user.firstName,
-      lastName: lastName || user.lastName,
-      email: email || user.email,
-      location: location || user.location,
-      avatar: avatar || user.avatar,
-    };
-    await User.updateOne({ _id: user._id }, { $set: data });
-    return res.status(200).json({
-      message: "User Updated successfully"
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 exports.add_book_mark = async (req, res, next) => {
   try {
     const { bookId } = req.body;
@@ -73,7 +41,53 @@ exports.get_book_mark = async (req, res, next) => {
       _id: { $in: user.bookMarks },
     });
     return res.status(200).json({
-      message: "BookMarks are fetched successfully",
+      // message: "BookMarks are fetched successfully",
+      data: books,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.add_favourite_book = async (req, res, next) => {
+  try {
+    const { bookId } = req.body;
+    const user = req.user;
+    //////////////////////////////////////////////// Validations
+    const book = await Book.find({ _id: bookId || null });
+    if (!bookId || bookId.length === 0 || book.length === 0) {
+      return res.status(400).json({
+        message: "Invalid book id",
+      });
+    }
+    if (user.favourite.book.includes(bookId)) {
+      return res.status(403).json({
+        message: "Book is already marked as fevourite",
+      });
+    }
+    //////////////////////////////////////////////// Validations
+    await User.updateOne(
+      { _id: user._id },
+      { $push: { "favourite.book": bookId } },
+      { upsert: true }
+    );
+    return res.status(200).json({
+      message: "Book is marked successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.get_favourite_book = async (req, res, next) => {
+  try {
+    const user = req.user;
+    // get user fevourite podcasts
+    const books = await Book.find({
+      _id: { $in: user.favourite.book },
+    });
+    return res.status(200).json({
+      // message: "Podcasts are fetched successfully",
       data: books,
     });
   } catch (error) {
@@ -92,7 +106,7 @@ exports.add_favourite_podcast = async (req, res, next) => {
         message: "Invalid podcast id",
       });
     }
-    if (user.favouritePodcasts.includes(podcastId)) {
+    if (user.favourite.podcast.includes(podcastId)) {
       return res.status(403).json({
         message: "Podcast is already marked as fevourite",
       });
@@ -100,7 +114,7 @@ exports.add_favourite_podcast = async (req, res, next) => {
     //////////////////////////////////////////////// Validations
     await User.updateOne(
       { _id: user._id },
-      { $set: { favouritePodcasts: [...user.favouritePodcasts, podcastId] } },
+      { $push: { "favourite.podcast": podcastId } },
       { upsert: true }
     );
     return res.status(200).json({
@@ -116,10 +130,10 @@ exports.get_favourite_podcast = async (req, res, next) => {
     const user = req.user;
     // get user fevourite podcasts
     const podcasts = await Podcast.find({
-      _id: { $in: user.favouritePodcasts },
+      _id: { $in: user.favourite.podcast },
     });
     return res.status(200).json({
-      message: "Podcasts are fetched successfully",
+      // message: "Podcasts are fetched successfully",
       data: podcasts,
     });
   } catch (error) {
@@ -138,7 +152,7 @@ exports.add_favourite_video = async (req, res, next) => {
         message: "Invalid video id",
       });
     }
-    if (user.favouriteVideos.includes(videoId)) {
+    if (user.favourite.video.includes(videoId)) {
       return res.status(403).json({
         message: "Video is already marked as fevourite",
       });
@@ -146,7 +160,7 @@ exports.add_favourite_video = async (req, res, next) => {
     //////////////////////////////////////////////// Validations
     await User.updateOne(
       { _id: user._id },
-      { $set: { favouriteVideos: [...user.favouriteVideos, videoId] } },
+      { $push: { "favourite.video": videoId} },
       { upsert: true }
     );
     return res.status(200).json({
@@ -162,10 +176,10 @@ exports.get_favourite_video = async (req, res, next) => {
     const user = req.user;
     // get user fevourite podcasts
     const videos = await Video.find({
-      _id: { $in: user.favouriteVideos },
+      _id: { $in: user.favourite.video },
     });
     return res.status(200).json({
-      message: "Podcasts are fetched successfully",
+      // message: "Podcasts are fetched successfully",
       data: videos,
     });
   } catch (error) {

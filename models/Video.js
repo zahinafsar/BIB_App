@@ -10,13 +10,21 @@ var VideoSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		cover: {
+			type: String,
+			required: true,
+		},
+		duration: {
+			type: String,
+			required: true,
+		},
 		file: {
 			type: String,
 			required: true,
 		},
         bookId: {
-			type: String,
-			required: true,
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Book",
 		}
 	}
 );
