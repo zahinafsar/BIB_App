@@ -1,8 +1,8 @@
-const User = require("../models/Users");
-const Book = require("../models/Book");
-const Video = require("../models/Video");
-const Podcast = require("../models/Podcast");
-const _ = require("lodash");
+const User = require('../models/Users');
+const Book = require('../models/Book');
+const Video = require('../models/Video');
+const Podcast = require('../models/Podcast');
+const _ = require('lodash');
 
 const favouritesType = {
   book: Book,
@@ -14,10 +14,10 @@ exports.add_favourite = async (req, res, next) => {
   try {
     const user = req.user;
     const { id, type } = req.body;
-    const isTypeOk = Object.keys(favouritesType).includes(type)
+    const isTypeOk = Object.keys(favouritesType).includes(type);
     if (!isTypeOk) {
       return res.status(400).json({
-        error: "Invalied type",
+        error: 'Invalied type',
       });
     }
     //////////////////////////////////////////////// Validations
@@ -36,7 +36,7 @@ exports.add_favourite = async (req, res, next) => {
       return res.status(200).json({
         message: `${_.startCase(type)} has been removed successfully`,
       });
-    }else{
+    } else {
       await User.updateOne(
         { _id: user._id },
         { $push: { [`favourite.${type}`]: id } },
@@ -55,11 +55,10 @@ exports.get_favourite = async (req, res, next) => {
   try {
     const user = req.user;
     const { type } = req.params;
-    const isTypeOk = Object.keys(favouritesType).includes(type)
-    console.log(isTypeOk);
+    const isTypeOk = Object.keys(favouritesType).includes(type);
     if (!isTypeOk) {
       return res.status(400).json({
-        error: "Invalied type",
+        error: 'Invalied type',
       });
     }
     // get user fevourite podcasts
@@ -79,7 +78,7 @@ exports.get_my_profile = async (req, res, next) => {
   try {
     const user = req.user;
     return res.status(200).json({
-      message: "User profile",
+      message: 'User profile',
       user,
     });
   } catch (error) {
@@ -100,7 +99,7 @@ exports.edit_my_profile = async (req, res, next) => {
     };
     await User.updateOne({ _id: user._id }, { $set: data });
     return res.status(200).json({
-      message: "User Updated successfully",
+      message: 'User Updated successfully',
     });
   } catch (error) {
     next(error);

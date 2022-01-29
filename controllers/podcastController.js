@@ -6,13 +6,6 @@ exports.add_book_podcast = async (req, res, next) => {
   try {
     const { bookId, title, text, description, file } = req.body;
 
-    const podcast = {
-      bookId,
-      title,
-      text,
-      description,
-      file,
-    };
     if (!bookId) {
       return res.status(400).json({
         error: "BookId is required",
@@ -24,6 +17,16 @@ exports.add_book_podcast = async (req, res, next) => {
         error: "Book not found",
       });
     }
+
+    const podcast = {
+      bookId,
+      title,
+      text,
+      cover: isExist.coverPhoto,
+      description,
+      file,
+    };
+
     mongopodcastData = new Podcast(podcast);
     const uploadedpodcast = await mongopodcastData.save();
     return res.status(200).json({
@@ -65,15 +68,13 @@ exports.get_all_podcasts = async (req, res, next) => {
     const page = parseInt(req.query.page) || 0;
     const limit = parseInt(req.query.limit) || 10;
 
-    const allPodcast = await Podcast.find({}).populate({ path: 'bookId', select: 'coverPhoto' })
+    const allPodcast = await Podcast.find({})
       .limit(limit)
       .skip(limit * page);
     const podcasts = allPodcast.reduce((acc, curr) => {
       const podcast = curr._doc;
       acc.push({
         ...podcast,
-        cover: podcast.bookId.coverPhoto,
-        bookId: podcast.bookId._id,
         isFavourite: req.user.favourite.podcast.includes(podcast._id),
       });
       return acc;

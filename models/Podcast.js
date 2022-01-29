@@ -11,6 +11,7 @@ var PodcastSchema = new mongoose.Schema(
 			required: true,
 		},
 		text: String,
+		cover: String,
 		file: {
 			type: String,
 			required: true,

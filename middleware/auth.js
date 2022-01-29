@@ -3,14 +3,11 @@ const User = require("../models/Users");
 
 exports.check_auth = (role) => {
   return async (req, res, next) => {
-    if (role === "admin") {
-      next();
-    }
     try {
       const token = req.headers.authorization;
       if (!token) {
         return res.status(403).json({
-          message: "No authorization token found!",
+          error: "No authorization token found!",
         });
       }
       const user = verify_token(req.headers.authorization.split(" ")[1]);
@@ -26,7 +23,7 @@ exports.check_auth = (role) => {
         next();
       } else {
         return res.status(403).json({
-          message: "You are not authorized to perform this action",
+          error: "You are not authorized to perform this action",
         });
       }
     } catch (error) {
