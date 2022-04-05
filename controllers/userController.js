@@ -1,8 +1,8 @@
-const User = require('../models/Users');
-const Book = require('../models/Book');
-const Video = require('../models/Video');
-const Podcast = require('../models/Podcast');
-const _ = require('lodash');
+const User = require("../models/Users");
+const Book = require("../models/Book");
+const Video = require("../models/Video");
+const Podcast = require("../models/Podcast");
+const _ = require("lodash");
 
 const favouritesType = {
   book: Book,
@@ -17,7 +17,7 @@ exports.add_favourite = async (req, res, next) => {
     const isTypeOk = Object.keys(favouritesType).includes(type);
     if (!isTypeOk) {
       return res.status(400).json({
-        error: 'Invalied type',
+        error: "Invalied type",
       });
     }
     //////////////////////////////////////////////// Validations
@@ -58,7 +58,7 @@ exports.get_favourite = async (req, res, next) => {
     const isTypeOk = Object.keys(favouritesType).includes(type);
     if (!isTypeOk) {
       return res.status(400).json({
-        error: 'Invalied type',
+        error: "Invalied type",
       });
     }
     // get user fevourite podcasts
@@ -78,8 +78,27 @@ exports.get_my_profile = async (req, res, next) => {
   try {
     const user = req.user;
     return res.status(200).json({
-      message: 'User profile',
+      message: "User profile",
       user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.get_all_user = async (req, res, next) => {
+  try {
+    const users = await User.find({}).select({
+      _id: 1,
+      firstName: 1,
+      lastName: 1,
+      email: 1,
+      avatar: 1,
+      roles: 1,
+    });
+    return res.status(200).json({
+      message: "User fetched successfully",
+      users,
     });
   } catch (error) {
     next(error);
@@ -99,7 +118,7 @@ exports.edit_my_profile = async (req, res, next) => {
     };
     await User.updateOne({ _id: user._id }, { $set: data });
     return res.status(200).json({
-      message: 'User Updated successfully',
+      message: "User Updated successfully",
     });
   } catch (error) {
     next(error);
